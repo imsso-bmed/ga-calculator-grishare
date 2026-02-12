@@ -1,20 +1,165 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ChoicePath - 임신 주수 계산 및 지원 정보
 
-# Run and deploy your AI Studio app
+## 프로젝트 취지
 
-This contains everything you need to run your app locally.
+**ChoicePath**는 임신 중지를 고민하는 여성들에게 안전하고 투명한 정보를 제공하는 웹 애플리케이션입니다. 
+모든 여성은 자신의 상황을 정확히 이해하고 선택할 권리가 있습니다. 이 앱은 비판 없이 필요한 정보를 제공하며, 
+사용자의 프라이버시를 최우선으로 보호합니다.
+
+### 핵심 가치
+- **투명성**: 임신 주수와 가능한 옵션을 명확하게 제시
+- **프라이버시**: 개인정보를 저장하지 않으며, 긴급 탈출 기능 제공
+- **공감**: 비판하지 않는 지지적인 정보 제공
+- **접근성**: 누구나 쉽게 사용할 수 있는 직관적인 인터페이스
+
+---
+
+## 주요 기능
+
+### 1. 📅 임신 주수 계산기 (`Calculator.tsx`)
+**역할**: 마지막 생리 시작일(LMP) 기반으로 현재 임신 주수를 계산
+
+- 사용자가 입력한 마지막 생리 시작일로부터 오늘까지의 기간을 계산
+- 주 단위와 일 단위로 정확한 임신 기간 표시
+- 추정 수정일(conception date) 제공
+- 산부인과 진료 시 필요한 정보 제공
+
+### 2. ⏱️ 시술 옵션 타임라인 (`TimelineDisplay.tsx`)
+**역할**: 임신 주수에 따른 가능한 시술 방법 및 정보 제공
+
+- **약물적 중절**: 초기 주수(~9주)에서 가능한 비수술적 방법
+- **수술적 중절**: 중기 주수에서 가능한 시술 옵션
+- **상담 필요**: 후기 주수에서는 전문의 상담 필수
+- 각 시술 방법의 특징, 예상 비용, 소요 시간 정보 제공
+- 현재 주수에서 가능한 옵션을 시각적으로 강조
+
+### 3. 🤖 AI 상담 기능 (`AiSupport.tsx`)
+**역할**: Google Gemini를 활용한 24시7 맞춤형 상담
+
+- **사용 모델**: Gemini Flash (gemini-3-flash-preview)
+- 임신 중지 절차, 법적 권리, 정서적 지원에 대한 질문 응답
+- 비판하지 않는 공감적 어조로 상담 제공
+- 의학적 정보는 한국 표준 지침 기반
+- **개인정보 미저장**: 대화 내용이 서버에 저장되지 않음
+
+**비용**: 
+- Google Gemini API 무료 티어 사용 (일일 1,500 요청 제한)
+- 사용량 기반 과금 (매우 저렴: 대화 1회당 ~$0.0002)
+
+### 4. 🚨 빠른 탈출 기능 (`QuickEscape.tsx`)
+**역할**: 프라이버시 보호를 위한 긴급 탈출
+
+- 화면 우측 하단에 고정된 빨간색 버튼
+- 클릭 시 즉시 구글 날씨 검색 페이지로 이동
+- 돌발 상황에서 브라우저 기록 보호
+- 민감한 상황에서의 프라이버시 보호
+
+### 5. ❓ 자주 묻는 질문 (FAQ)
+**역할**: 일반적인 질문에 대한 빠른 답변 제공
+
+- 비용, 소요 시간, 법적 제한 등 핵심 정보
+- 의료보험 적용, 미성년자 상담 등 실용적 정보
+- AI 상담 전 기본 정보 확인 가능
+
+---
+
+## 기술 스택
+
+### Frontend
+- **React 19** + **TypeScript**: 타입 안전성과 최신 React 기능
+- **Vite**: 빠른 개발 환경 및 최적화된 프로덕션 빌드
+- **Tailwind CSS**: 유틸리티 우선 스타일링
+- **Lucide React**: 일관된 아이콘 시스템
+
+### AI/ML
+- **Google Gemini API** (@google/genai): 생성형 AI 상담 기능
+- Gemini Flash 모델: 빠른 응답 속도와 비용 효율성
+
+### Deployment
+- **Vercel**: 자동 CI/CD 및 글로벌 CDN
+- **Environment Variables**: API 키 보안 관리
+
+---
+
+## 로컬 실행 방법
+
+### 사전 요구사항
+- Node.js 18+ 설치
+- Google Gemini API 키 ([발급 방법](https://ai.google.dev))
+
+### 설치 및 실행
+
+1. **의존성 설치**
+   ```bash
+   npm install
+   ```
+
+2. **환경 변수 설정**
+   
+   `.env.local` 파일 생성 후 Gemini API 키 설정:
+   ```env
+   GEMINI_API_KEY=your_api_key_here
+   ```
+
+3. **개발 서버 실행**
+   ```bash
+   npm run dev
+   ```
+   
+   브라우저에서 `http://localhost:3000` 접속
+
+4. **프로덕션 빌드**
+   ```bash
+   npm run build
+   npm run preview
+   ```
+
+---
+
+## 배포 정보
+
+**배포 URL**: https://ga-calculator-grishare.vercel.app
+
+### Vercel 환경 변수 설정
+Vercel 대시보드에서 다음 환경 변수를 설정해야 합니다:
+- `GEMINI_API_KEY`: Google Gemini API 키
+
+### 자동 배포
+- `main` 브랜치에 푸시 시 자동 배포
+- Pull Request 생성 시 프리뷰 배포
+
+---
+
+## 프라이버시 및 보안
+
+### 개인정보 보호
+- ✅ 사용자 입력 데이터를 서버에 저장하지 않음
+- ✅ AI 상담 내용 미저장
+- ✅ 쿠키 및 로컬 스토리지 사용 안 함
+- ✅ 빠른 탈출 기능으로 브라우저 기록 보호
+
+### 보안
+- API 키는 환경 변수로 관리 (코드베이스에 미포함)
+- HTTPS 사용 (Vercel 자동 제공)
+- 클라이언트 사이드 렌더링으로 민감 데이터 서버 전송 최소화
+
+---
+
+## 면책 조항
+
+이 웹사이트는 **정보 제공만을 목적**으로 하며, 의학적 진단이나 법적 자문을 대신할 수 없습니다. 
+모든 의학적 결정은 반드시 전문 의료인과 상담 후 내려져야 합니다.
+
+긴급한 의학적 도움이 필요하거나 위험 징후(극심한 통증, 과다 출혈 등)가 있는 경우 즉시 응급센터(119)를 방문하십시오.
+
+---
+
+## 라이선스
+
+이 프로젝트는 정보 제공 및 교육 목적으로 제작되었습니다.
+
+---
+
+## AI Studio 정보
 
 View your app in AI Studio: https://ai.studio/apps/drive/1cN8bOmxOuW3Hesndnqfu0dOMIjY6huCV
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
